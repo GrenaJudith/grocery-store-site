@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payments</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Payment Reminders</h2>
+
+<input type="text" id="payName" placeholder="Customer Name">
+<input type="number" id="payAmount" placeholder="Amount Due">
+<button onclick="addPayment()">Add Reminder</button>
+
+<table border="1" id="paymentTable">
+    <tr>
+        <th>Name</th>
+        <th>Amount</th>
+    </tr>
+</table>
+
+<script>
+function addPayment() {
+    let name = document.getElementById("payName").value;
+    let amount = document.getElementById("payAmount").value;
+
+    let table = document.getElementById("paymentTable");
+    let row = table.insertRow();
+
+    row.insertCell(0).innerText = name;
+    row.insertCell(1).innerText = amount;
+}
+</script>
+
+</body>
+</html>

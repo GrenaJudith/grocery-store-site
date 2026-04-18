@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employees</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Employee Records</h2>
+
+<input type="text" id="empName" placeholder="Employee Name">
+<input type="text" id="empRole" placeholder="Role">
+<button onclick="addEmployee()">Add Employee</button>
+
+<table border="1" id="employeeTable">
+    <tr>
+        <th>Name</th>
+        <th>Role</th>
+    </tr>
+</table>
+
+<script>
+function addEmployee() {
+    let name = document.getElementById("empName").value;
+    let role = document.getElementById("empRole").value;
+
+    let table = document.getElementById("employeeTable");
+    let row = table.insertRow();
+
+    row.insertCell(0).innerText = name;
+    row.insertCell(1).innerText = role;
+}
+</script>
+
+</body>
+</html>

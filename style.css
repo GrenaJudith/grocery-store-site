@@ -1,0 +1,47 @@
+body {
+    font-family: Arial;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+input {
+    margin: 5px;
+    padding: 8px;
+}
+
+button {
+    padding: 8px 12px;
+    background-color: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: darkgreen;
+}
+
+table {
+    margin: auto;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+}
+
+nav a {
+    margin: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    color: blue;
+}
+
+.login-container {
+    margin-top: 100px;
+}
