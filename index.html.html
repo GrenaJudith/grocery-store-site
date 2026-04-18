@@ -1,24 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Grocery Store Dashboard</title>
+    <title>Grocery Store Login</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="login-container" id="loginPage">
-    <h2>Owner Login</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
+<div class="login-box" id="loginPage">
+    <h1>🛒 Grocery Store</h1>
+    <p>Owner Login</p>
+
+    <input type="text" id="username" placeholder="Enter Username">
+    <input type="password" id="password" placeholder="Enter Password">
+
     <button onclick="login()">Login</button>
 </div>
 
 <div class="dashboard" id="dashboard" style="display:none;">
-    <h1>Welcome to Grocery Store Dashboard</h1>
+    <h1>Welcome Owner 👋</h1>
+
     <nav>
-        <a href="inventory.html">Inventory</a>
-        <a href="employees.html">Employees</a>
-        <a href="payments.html">Payments</a>
+        <a href="inventory.html">📦 Inventory</a>
+        <a href="employees.html">👨‍💼 Employees</a>
+        <a href="payments.html">💰 Payments</a>
     </nav>
 </div>
 
@@ -27,11 +35,11 @@ function login() {
     let user = document.getElementById("username").value;
     let pass = document.getElementById("password").value;
 
-    if(user === "admin" && pass === "1234") {
+    if(user === "Grena" && pass === "2905") {
         document.getElementById("loginPage").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
     } else {
-        alert("Invalid Login");
+        alert("Invalid Username or Password");
     }
 }
 </script>

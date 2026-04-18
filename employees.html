@@ -1,35 +1,157 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Employees</title>
+    <title>Employee Management</title>
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        table {
+            width: 85%;
+            margin: auto;
+        }
+
+        button {
+            margin: 3px;
+        }
+
+        .present {
+            background-color: #d4edda;
+        }
+
+        .absent {
+            background-color: #f8d7da;
+        }
+    </style>
 </head>
 <body>
 
-<h2>Employee Records</h2>
+<h2>👨‍💼 Employee Details</h2>
 
 <input type="text" id="empName" placeholder="Employee Name">
 <input type="text" id="empRole" placeholder="Role">
+<input type="text" id="empPhone" placeholder="Phone Number (10 digits)">
+
 <button onclick="addEmployee()">Add Employee</button>
 
 <table border="1" id="employeeTable">
-    <tr>
-        <th>Name</th>
-        <th>Role</th>
-    </tr>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Phone</th>
+            <th>Attendance</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
 </table>
 
 <script>
-function addEmployee() {
-    let name = document.getElementById("empName").value;
-    let role = document.getElementById("empRole").value;
+let employees = JSON.parse(localStorage.getItem("employees")) || [];
 
-    let table = document.getElementById("employeeTable");
-    let row = table.insertRow();
+// Load employees
+function loadEmployees() {
+    let tbody = document.querySelector("#employeeTable tbody");
+    tbody.innerHTML = "";
 
-    row.insertCell(0).innerText = name;
-    row.insertCell(1).innerText = role;
+    employees.forEach((emp, index) => {
+
+        let statusClass = emp.attendance === "Present" ? "present" : "absent";
+
+        let row = `
+            <tr class="${statusClass}">
+                <td>${emp.name}</td>
+                <td>${emp.role}</td>
+                <td>${emp.phone}</td>
+                <td>${emp.attendance || "Absent"}</td>
+                <td>
+                    <button onclick="markPresent(${index})">Present</button>
+                    <button onclick="markAbsent(${index})">Absent</button>
+                    <button onclick="editEmployee(${index})">Edit</button>
+                    <button onclick="deleteEmployee(${index})">Delete</button>
+                </td>
+            </tr>
+        `;
+
+        tbody.innerHTML += row;
+    });
 }
+
+// Add employee with phone validation
+function addEmployee() {
+    let name = document.getElementById("empName").value.trim();
+    let role = document.getElementById("empRole").value.trim();
+    let phone = document.getElementById("empPhone").value.trim();
+
+    // 📱 Phone validation (only 10 digits)
+    let phonePattern = /^[0-9]{10}$/;
+
+    if (!name || !role || !phone) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    if (!phonePattern.test(phone)) {
+        alert("Enter valid 10-digit phone number");
+        return;
+    }
+
+    employees.push({ name, role, phone, attendance: "Absent" });
+    saveAndReload();
+}
+
+// Attendance functions
+function markPresent(index) {
+    employees[index].attendance = "Present";
+    saveAndReload();
+}
+
+function markAbsent(index) {
+    employees[index].attendance = "Absent";
+    saveAndReload();
+}
+
+// Edit employee
+function editEmployee(index) {
+    let newName = prompt("Edit name:", employees[index].name);
+    let newRole = prompt("Edit role:", employees[index].role);
+    let newPhone = prompt("Edit phone:", employees[index].phone);
+
+    let phonePattern = /^[0-9]{10}$/;
+
+    if (newName && newRole && phonePattern.test(newPhone)) {
+        employees[index] = {
+            name: newName.trim(),
+            role: newRole.trim(),
+            phone: newPhone.trim(),
+            attendance: employees[index].attendance
+        };
+        saveAndReload();
+    } else {
+        alert("Invalid phone number");
+    }
+}
+
+// Delete employee
+function deleteEmployee(index) {
+    if (confirm("Delete this employee?")) {
+        employees.splice(index, 1);
+        saveAndReload();
+    }
+}
+
+// Save & reload
+function saveAndReload() {
+    localStorage.setItem("employees", JSON.stringify(employees));
+    loadEmployees();
+
+    document.getElementById("empName").value = "";
+    document.getElementById("empRole").value = "";
+    document.getElementById("empPhone").value = "";
+}
+
+// Initial load
+window.onload = loadEmployees;
 </script>
 
 </body>
