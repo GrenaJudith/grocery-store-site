@@ -5,42 +5,93 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
+        /* Alignment and Layout based on sketch */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+        }
+
+        /* INPUT ROW: Customer, Amount, and Date in one horizontal line */
+        .input-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        /* Centered Add Payment Button */
+        .add-btn-container {
+            margin-bottom: 30px;
+        }
+
+        .add-btn-container button {
+            padding: 10px 25px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Table Styling */
         table {
-            width: 85%;
-            margin: auto;
+            width: 90%;
+            margin-bottom: 40px;
+            border-collapse: collapse;
+            text-align: center;
         }
 
-        button {
-            margin: 3px;
+        th, td {
+            padding: 12px;
         }
 
-        /* Dashboard cards */
+        /* DASHBOARD CARDS: Positioned at the bottom per sketch */
         .dashboard {
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin-bottom: 20px;
+            margin-top: 20px;
+            width: 100%;
         }
 
         .card {
-            padding: 15px 25px;
-            border-radius: 10px;
+            padding: 20px;
+            border-radius: 8px;
             color: white;
             font-weight: bold;
+            min-width: 150px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .total { background: #007bff; }
-        .urgent { background: black; }
-        .soon { background: orange; }
+        .total { background: #007bff; border: 1px solid #000; }
+        .urgent { background: black; border: 1px solid #000; }
+        .soon { background: orange; border: 1px solid #000; color: black; }
 
-        /* Table row colors */
-        .urgent-row {
-            background-color: black;
-            color: white;
-        }
+        /* Row Highlighting */
+        .urgent-row { background-color: black !important; color: white; }
+        .soon-row { background-color: #fff3cd !important; }
 
-        .soon-row {
-            background-color: #fff3cd;
+        button.action-btn {
+            padding: 5px 10px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -48,29 +99,16 @@
 
 <h2>💰 Payment Dashboard</h2>
 
-<!-- 📊 SUMMARY -->
-<div class="dashboard">
-    <div class="card total">
-        Total Pending: ₹<span id="totalAmount">0</span>
-    </div>
-
-    <div class="card urgent">
-        Urgent: <span id="urgentCount">0</span>
-    </div>
-
-    <div class="card soon">
-        Due Soon: <span id="soonCount">0</span>
-    </div>
+<div class="input-row">
+    <input type="text" id="payName" placeholder="Customer Name">
+    <input type="number" id="payAmount" placeholder="Amount">
+    <input type="date" id="payDate">
 </div>
 
-<!-- INPUT -->
-<input type="text" id="payName" placeholder="Customer Name">
-<input type="number" id="payAmount" placeholder="Amount">
-<input type="date" id="payDate">
+<div class="add-btn-container">
+    <button onclick="addPayment()">Add Payment</button>
+</div>
 
-<button onclick="addPayment()">Add Payment</button>
-
-<!-- TABLE -->
 <table border="1" id="paymentTable">
     <thead>
         <tr>
@@ -84,6 +122,20 @@
     <tbody></tbody>
 </table>
 
+<div class="dashboard">
+    <div class="card total">
+        Total Pending<br>₹<span id="totalAmount">0</span>
+    </div>
+
+    <div class="card urgent">
+        Urgent<br><span id="urgentCount">0</span>
+    </div>
+
+    <div class="card soon">
+        Due Soon<br><span id="soonCount">0</span>
+    </div>
+</div>
+
 <script>
 let payments = JSON.parse(localStorage.getItem("payments")) || [];
 
@@ -92,14 +144,15 @@ function loadPayments() {
     tbody.innerHTML = "";
 
     let today = new Date();
+    today.setHours(0,0,0,0);
 
     let total = 0;
     let urgentCount = 0;
     let soonCount = 0;
 
     payments.forEach((pay, index) => {
-
         let dueDate = new Date(pay.date);
+        dueDate.setHours(0,0,0,0);
         let diffDays = (dueDate - today) / (1000 * 60 * 60 * 24);
 
         let status = "Normal";
@@ -124,22 +177,19 @@ function loadPayments() {
                 <td>${pay.date}</td>
                 <td>${status}</td>
                 <td>
-                    <button onclick="markPaid(${index})">Paid</button>
-                    <button onclick="deletePayment(${index})">Delete</button>
+                    <button class="action-btn" onclick="markPaid(${index})">Paid</button>
+                    <button class="action-btn" onclick="deletePayment(${index})">Delete</button>
                 </td>
             </tr>
         `;
-
         tbody.innerHTML += row;
     });
 
-    // 🔥 Update dashboard values
     document.getElementById("totalAmount").innerText = total;
     document.getElementById("urgentCount").innerText = urgentCount;
     document.getElementById("soonCount").innerText = soonCount;
 }
 
-// Add payment
 function addPayment() {
     let name = document.getElementById("payName").value.trim();
     let amount = document.getElementById("payAmount").value;
@@ -154,7 +204,6 @@ function addPayment() {
     saveAndReload();
 }
 
-// Paid → remove
 function markPaid(index) {
     if (confirm("Payment received?")) {
         payments.splice(index, 1);
@@ -162,7 +211,6 @@ function markPaid(index) {
     }
 }
 
-// Delete
 function deletePayment(index) {
     if (confirm("Delete this record?")) {
         payments.splice(index, 1);
@@ -170,17 +218,14 @@ function deletePayment(index) {
     }
 }
 
-// Save + reload
 function saveAndReload() {
     localStorage.setItem("payments", JSON.stringify(payments));
     loadPayments();
-
     document.getElementById("payName").value = "";
     document.getElementById("payAmount").value = "";
     document.getElementById("payDate").value = "";
 }
 
-// Load on start
 window.onload = loadPayments;
 </script>
 

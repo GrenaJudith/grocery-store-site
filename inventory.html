@@ -5,6 +5,47 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
+        /* Alignment and Layout based on sketch */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            padding-top: 20px;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Inputs placed on left and right sides */
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%; /* Spans the width to put inputs on sides */
+            max-width: 600px;
+            margin-bottom: 15px;
+        }
+
+        input {
+            padding: 8px;
+            border: 1px solid #000;
+            width: 40%;
+        }
+
+        /* Centered Add/Update button */
+        .button-row {
+            margin-bottom: 30px;
+        }
+
+        /* Table styling */
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+
         .low-stock {
             background-color: #ffe0e0; /* light red */
         }
@@ -14,23 +55,28 @@
             color: white;
         }
 
-        table {
-            width: 80%;
-            margin: auto;
-        }
-
         button {
             margin: 3px;
+            padding: 8px 15px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-<h2>📦 Store Inventory</h2>
+<div class="header-section">
+    <div style="font-size: 24px;">🏢</div>
+    <h2>Store Inventory</h2>
+</div>
 
-<input type="text" id="itemName" placeholder="Item Name">
-<input type="number" id="itemQty" placeholder="Stock Quantity">
-<button onclick="addOrUpdateItem()">Add / Update</button>
+<div class="input-container">
+    <input type="text" id="itemName" placeholder="Item Name">
+    <input type="number" id="itemQty" placeholder="Stock Quantity">
+</div>
+
+<div class="button-row">
+    <button onclick="addOrUpdateItem()">Add / Update</button>
+</div>
 
 <table border="1" id="inventoryTable">
     <thead>

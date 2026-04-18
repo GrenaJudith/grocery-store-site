@@ -5,13 +5,52 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
+        /* Container for central alignment */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        /* Header styling based on sketch icon */
+        .header-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header-section span {
+            font-size: 30px;
+        }
+
+        /* HORIZONTAL ALIGNMENT: Puts all inputs and button in one row */
+        .input-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        input {
+            padding: 8px;
+            border: 1px solid #000;
+            border-radius: 4px;
+        }
+
         table {
             width: 85%;
             margin: auto;
+            border-collapse: collapse;
         }
 
         button {
             margin: 3px;
+            padding: 8px 15px;
+            cursor: pointer;
         }
 
         .present {
@@ -25,13 +64,17 @@
 </head>
 <body>
 
-<h2>👨‍💼 Employee Details</h2>
+<div class="header-section">
+    <span>👤</span>
+    <h2>Employee details</h2>
+</div>
 
-<input type="text" id="empName" placeholder="Employee Name">
-<input type="text" id="empRole" placeholder="Role">
-<input type="text" id="empPhone" placeholder="Phone Number (10 digits)">
-
-<button onclick="addEmployee()">Add Employee</button>
+<div class="input-row">
+    <input type="text" id="empName" placeholder="Employee Name">
+    <input type="text" id="empRole" placeholder="Role">
+    <input type="text" id="empPhone" placeholder="Phone Number">
+    <button onclick="addEmployee()">Add Employee</button>
+</div>
 
 <table border="1" id="employeeTable">
     <thead>
